@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { FlashCard, HintLevel, CardOutcome } from "../../types";
 import { FlashCard as FlashCardComp } from "../FlashCard/FlashCard";
 import "./DeckView.css";
@@ -6,13 +6,17 @@ import "./DeckView.css";
 interface Props {
   cards: FlashCard[];
   onDone: (outcomes: CardOutcome[]) => void;
+  onShuffle: () => void;
+  onHome: () => void;
 }
 
-export function DeckView({ cards, onDone }: Props) {
+export function DeckView({ cards, onDone, onShuffle, onHome }: Props) {
   const [index, setIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [hintLevel, setHintLevel] = useState<HintLevel>(0);
   const [outcomes, setOutcomes] = useState<CardOutcome[]>([]);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const card = cards[index];
 
@@ -31,11 +35,24 @@ export function DeckView({ cards, onDone }: Props) {
     [outcomes, index, cards.length, onDone],
   );
 
+  // Close menu when clicking outside
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       const tag = (e.target as HTMLElement).tagName;
       if (tag === "TEXTAREA" || tag === "INPUT") return;
-      if (e.key === " " || e.key === "Enter") {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+      } else if (e.key === " " || e.key === "Enter") {
         e.preventDefault();
         setIsFlipped((f) => !f);
       } else if (e.key === "ArrowLeft") {
@@ -53,7 +70,6 @@ export function DeckView({ cards, onDone }: Props) {
   if (!card) return null;
 
   const progress = (index / cards.length) * 100;
-
   const hintLabel =
     hintLevel === 0 ? "Hint" : hintLevel === 1 ? "More hint" : hintLevel === 2 ? "Full pinyin" : "Pinyin shown";
 
@@ -63,9 +79,36 @@ export function DeckView({ cards, onDone }: Props) {
         <div className="deck-progress-bar">
           <div className="deck-progress-fill" style={{ width: `${progress}%` }} />
         </div>
-        <span className="deck-counter">
-          {index + 1} / {cards.length}
-        </span>
+        <div className="deck-top-row">
+          <span className="deck-counter">
+            {index + 1} / {cards.length}
+          </span>
+          <div className="deck-menu-wrap" ref={menuRef}>
+            <button
+              className="deck-menu-btn"
+              onClick={() => setMenuOpen((o) => !o)}
+              aria-label="Options"
+            >
+              ···
+            </button>
+            {menuOpen && (
+              <div className="deck-menu-dropdown">
+                <button
+                  className="deck-menu-item"
+                  onClick={() => { setMenuOpen(false); onShuffle(); }}
+                >
+                  🔀 Shuffle &amp; restart
+                </button>
+                <button
+                  className="deck-menu-item"
+                  onClick={() => { setMenuOpen(false); onHome(); }}
+                >
+                  🏠 Back to home
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       <div className="deck-card-area">

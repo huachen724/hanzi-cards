@@ -1,0 +1,123 @@
+.deck-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px 16px 32px;
+  gap: 16px;
+}
+
+.deck-top {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.deck-progress-bar {
+  width: 100%;
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.deck-progress-fill {
+  height: 100%;
+  background: #4f46e5;
+  border-radius: 4px;
+  transition: width 0.35s ease;
+}
+
+.deck-counter {
+  font-size: 13px;
+  color: #9ca3af;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+
+.deck-card-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.deck-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 380px;
+}
+
+.deck-hint-btn {
+  padding: 10px 28px;
+  border-radius: 999px;
+  border: 2px solid #4f46e5;
+  background: transparent;
+  color: #4f46e5;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.deck-hint-btn:hover:not(:disabled) {
+  background: #4f46e5;
+  color: #fff;
+}
+
+.deck-hint-btn:disabled {
+  border-color: #e5e7eb;
+  color: #d1d5db;
+  cursor: default;
+}
+
+.deck-swipe-btns {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.deck-btn {
+  flex: 1;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.deck-btn:active {
+  transform: scale(0.97);
+}
+
+.deck-got {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.deck-again {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.deck-kb-hint {
+  font-size: 11px;
+  color: #d1d5db;
+  margin: 0;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .deck-kb-hint {
+    display: none;
+  }
+}

@@ -60,7 +60,7 @@ export function UploadView({ onCards }: Props) {
     <div className="upload-view">
       <div className="upload-hero">
         <h1 className="upload-title">汉字卡</h1>
-        <p className="upload-subtitle">Paste Chinese song lyrics. Get flashcards.</p>
+        <p className="upload-subtitle">Paste Chinese song lyrics. Get flashcards. (or just any chinese paragraph, poem, or news article lmao. I made this myself for lyrics : D!)</p>
       </div>
 
       <form className="upload-form" onSubmit={handleSubmit}>
